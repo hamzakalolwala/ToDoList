@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html><body><script>
+// Runs the real worker (log-mel + onnxruntime-web + CTC decode) on the stand-in model and reports the decode.
+window.result = (async () => {
+  const vocab = (await (await fetch('/site/vocab.json')).json()).phonemes;
+  const ref = await (await fetch('/test/assets/dummy_ref.json')).json();
+  const w = new Worker('/site/hear-worker.js');
+  const msgs = [];
+  const next = type => new Promise((res, rej) => {
+    w.addEventListener('message', function h(e) {
+      msgs.push(e.data.type);
+      if (e.data.type === type) { w.removeEventListener('message', h); res(e.data); }
+      if (e.data.type === 'error') { w.removeEventListener('message', h); rej(new Error(e.data.message)); }
+    });
+  });
+  w.postMessage({ type: 'init', modelUrl: '/test/assets/dummy.onnx', ortBase: '/site/ort/', vocab, cacheName: 'test-' + Date.now() });
+  await next('ready');
+  w.postMessage({ type: 'hear', id: 1, audio: Float32Array.from(ref.audio), riwaya: 0 });
+  const h = await next('heard');
+  return { text: h.text, want: ref.text, T: h.T, wantT: ref.T, ms: h.ms, probs: h.probs.length, times: h.times.length, msgs };
+})().catch(e => ({ error: String(e) }));
+</script></body></html>

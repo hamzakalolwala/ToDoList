@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>e-Muhaffiz</title>
+<meta name="theme-color" content="#0f5132">
+<style>
+@font-face{font-family:"Amiri Quran";src:url(fonts/amiri-quran-arabic-400-normal.woff2) format("woff2");unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC;font-display:block}
+@font-face{font-family:"Amiri Quran";src:url(fonts/amiri-quran-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF;font-display:block}
+@font-face{font-family:Inter;font-weight:400;src:url(fonts/inter-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:Inter;font-weight:500;src:url(fonts/inter-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:Inter;font-weight:600;src:url(fonts/inter-latin-600-normal.woff2) format("woff2")}
+:root{--bg:#f7f3e9;--card:#fffdf7;--ink:#1d2a24;--mute:#6b746f;--line:#e4dccb;--green:#0f5132;--green2:#e3f1e8;--red:#b42318;--red2:#fde7e5;--amber:#a15c07;--amber2:#fdf0d5;--blue:#1d4ed8;--blue2:#e4ebfd;--gold:#a8842f}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,system-ui,sans-serif}
+.wrap{max-width:780px;margin:0 auto;padding:14px 14px 130px}
+header{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:10px}
+h1{font-size:20px;margin:0;color:var(--green)}
+h1 span{font-family:"Amiri Quran",serif;font-weight:400;color:var(--gold);margin-left:6px}
+.sub{color:var(--mute);font-size:12.5px;text-align:right}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:end}
+label{font-size:12px;color:var(--mute);display:flex;flex-direction:column;gap:3px}
+select,input[type=number]{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+select.surah{min-width:190px;flex:1}
+input.n{width:72px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.seg button{border:0;background:none;padding:8px 12px;font:inherit;color:var(--mute);cursor:pointer}
+.seg button.on{background:var(--green);color:#fff}
+.opts{display:flex;gap:6px 14px;flex-wrap:wrap;margin-top:10px;align-items:center;font-size:13.5px}
+.opts label{flex-direction:row;align-items:center;gap:6px;color:var(--ink);font-size:13.5px}
+.note{margin-top:10px;font-size:13px;padding:9px 11px;border-radius:10px;background:var(--amber2);color:#5b3a06;display:none}
+.note.show{display:block}
+.model{margin-top:10px;font-size:12.5px;color:var(--mute);display:flex;align-items:center;gap:8px}
+.model .bar{flex:1;height:6px;background:#ece5d4;border-radius:4px;overflow:hidden}
+.model .bar i{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+#mushaf{margin-top:12px;direction:rtl;text-align:justify;font-family:"Amiri Quran",serif;font-size:27px;line-height:2.4;padding:18px 16px;min-height:200px}
+.w{padding:0 2px;border-radius:6px;cursor:pointer;transition:background .15s,color .15s}
+.hide .w.p{color:transparent;background:linear-gradient(#ece5d4,#ece5d4) no-repeat center 62%/100% 30%}
+.w.ok{color:var(--green)}
+.w.kh{color:var(--green);background:var(--amber2);box-shadow:inset 0 -3px 0 var(--amber)}
+.w.jali{color:var(--red);background:var(--red2)}
+.w.fixed{color:var(--green);text-decoration:underline wavy var(--red);text-underline-offset:7px}
+.w.cur{outline:2px solid var(--gold);outline-offset:1px}
+.am{display:inline-flex;align-items:center;justify-content:center;min-width:1.25em;height:1.25em;font-size:.6em;border:1.5px solid var(--gold);border-radius:50%;color:var(--gold);margin:0 4px;line-height:1;vertical-align:middle;padding:0 .2em}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--mute);margin-top:8px}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.stats{display:flex;gap:12px;font-size:13px;color:var(--mute);margin-top:10px;flex-wrap:wrap}
+.stats b{color:var(--ink)}
+.bar-b{position:fixed;left:0;right:0;bottom:0;background:rgba(255,253,247,.97);border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom))}
+.bar-b .in{max-width:780px;margin:0 auto;display:flex;gap:8px;align-items:center}
+.btn{font:inherit;font-weight:600;border:1px solid var(--line);background:#fff;color:var(--ink);padding:11px 14px;border-radius:12px;cursor:pointer;white-space:nowrap}
+.btn:disabled{opacity:.5}
+.btn.main{background:var(--green);border-color:var(--green);color:#fff;flex:1;display:flex;gap:8px;align-items:center;justify-content:center}
+.btn.main.live{background:var(--red);border-color:var(--red)}
+.lvl{width:9px;height:9px;border-radius:50%;background:#fff;opacity:.5;transition:transform .08s}
+#stopCard{position:fixed;left:0;right:0;bottom:80px;padding:0 14px;display:none;z-index:5}
+#stopCard.show{display:block}
+body.stopped .wrap{padding-bottom:470px}
+#stopCard .in{max-width:780px;margin:0 auto;background:#fff;border:2px solid var(--red);border-radius:16px;padding:14px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+#stopCard.kh .in{border-color:var(--amber)}
+#scTitle{font-weight:600;color:var(--red)}
+#stopCard.kh #scTitle{color:var(--amber)}
+#scWord{font-family:"Amiri Quran",serif;font-size:38px;line-height:1.9;direction:rtl;text-align:center;color:var(--green)}
+#scWhy{font-size:13.5px;text-align:center}
+#scWhy .ar{direction:rtl;color:var(--mute);font-size:13px}
+#stopCard .row{margin-top:10px}
+#stopCard .btn{flex:1}
+dialog{border:0;border-radius:16px;padding:0;max-width:460px;width:calc(100% - 28px);background:var(--card);color:var(--ink)}
+dialog::backdrop{background:rgba(20,30,25,.45)}
+.dlg{padding:18px}
+.dlg h2{margin:0 0 8px;font-size:18px;color:var(--green)}
+.big{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.big div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center;font-size:12px;color:var(--mute)}
+.big div b{display:block;font-size:20px;color:var(--ink)}
+.rev{font-size:14px;max-height:45vh;overflow:auto}
+.rev li{margin:4px 0}
+.qw{font-family:"Amiri Quran",serif;font-size:20px}
+details.dbg{margin-top:14px;font-size:12px;color:var(--mute)}
+details.dbg summary{cursor:pointer;color:var(--ink)}
+#log{font:11.5px/1.4 ui-monospace,monospace;white-space:pre-wrap;max-height:240px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px}
+.hist ul{padding-left:18px;margin:6px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>e-Muhaffiz<span>تسميع</span></h1>
+    <div class="sub" id="status">Loading…</div>
+  </header>
+
+  <div class="card">
+    <div class="row">
+      <label style="flex:1">Surah<select class="surah" id="surah"></select></label>
+      <label>From ayah<input class="n" id="from" type="number" min="1" value="1"></label>
+      <label>To ayah<input class="n" id="to" type="number" min="1" value="7"></label>
+    </div>
+    <div class="opts">
+      <div class="seg" id="modeSeg"><button data-m="mic" class="on">Listen to me</button><button data-m="self">Self-check</button></div>
+      <label><input type="checkbox" id="hideT" checked>Hide text</label>
+      <label><input type="checkbox" id="voiceOn" checked>Say the right word</label>
+      <label><input type="checkbox" id="stopKh">Also stop me for tajweed</label>
+    </div>
+    <div class="model" id="modelBox"><span id="modelTxt">Preparing the tajweed model…</span><div class="bar"><i id="modelBar"></i></div></div>
+    <div class="note" id="note"></div>
+  </div>
+
+  <div class="card" id="mushaf"></div>
+  <div class="legend">
+    <span><b style="background:var(--green)"></b>Correct</span>
+    <span><b style="background:var(--amber)"></b>Tajweed remark</span>
+    <span><b style="background:var(--red)"></b>Mistake</span>
+    <span><b style="background:var(--green);box-shadow:inset 0 -2px 0 var(--red)"></b>Fixed after correction</span>
+    <span>Tap a word to see what was heard.</span>
+  </div>
+  <div class="stats" id="stats"></div>
+
+  <details class="hist" id="histBox"><summary>Past tasmi sessions</summary><ul id="hist"></ul></details>
+  <details class="dbg"><summary>What the model heard (for troubleshooting)</summary>
+    <div class="row" style="margin:6px 0"><button class="btn" id="copyLog" style="padding:6px 10px">Copy log</button></div>
+    <div id="log"></div>
+  </details>
+</div>
+
+<div id="stopCard"><div class="in">
+  <div id="scTitle"></div>
+  <div id="scWord"></div>
+  <div id="scWhy"></div>
+  <div class="row">
+    <button class="btn" id="scAgain">🔊 Say again</button>
+    <button class="btn" id="scRight">I said it right</button>
+    <button class="btn main" id="scGo">Carry on</button>
+  </div>
+</div></div>
+
+<div class="bar-b"><div class="in">
+  <button class="btn" id="hintBtn">Hint</button>
+  <button class="btn main" id="mainBtn" disabled><span class="lvl" id="lvl"></span><span id="mainTxt">Start tasmi</span></button>
+  <button class="btn" id="doneBtn">Finish</button>
+</div></div>
+
+<dialog id="wordDlg"><div class="dlg">
+  <h2 id="wdWord" class="qw" style="font-size:30px;direction:rtl"></h2>
+  <div id="wdBody" class="rev"></div>
+  <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn" id="wdOk">Mark as correct</button><button class="btn main" style="flex:0" id="wdClose">Close</button></div>
+</div></dialog>
+
+<dialog id="sumDlg"><div class="dlg">
+  <h2>Tasmi result</h2>
+  <div class="sub" style="text-align:left" id="sRange"></div>
+  <div class="big" id="sBig"></div>
+  <div class="rev" id="sRev"></div>
+  <div class="row" style="justify-content:flex-end;margin-top:14px">
+    <button class="btn" id="sAgain">Recite again</button>
+    <button class="btn main" style="flex:0" id="sClose">Close</button>
+  </div>
+</div></dialog>
+
+<script src="engine.js"></script>
+<script src="audio.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
