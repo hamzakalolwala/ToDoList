@@ -4,83 +4,90 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>e-Muhaffiz</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0f5132">
 <style>
+@font-face{font-family:"Amiri Quran";src:url(fonts/amiri-quran-arabic-400-normal.woff2) format("woff2");unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC;font-display:block}
+@font-face{font-family:"Amiri Quran";src:url(fonts/amiri-quran-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF;font-display:block}
+@font-face{font-family:Inter;font-weight:400;src:url(fonts/inter-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:Inter;font-weight:500;src:url(fonts/inter-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:Inter;font-weight:600;src:url(fonts/inter-latin-600-normal.woff2) format("woff2")}
 :root{--bg:#f7f3e9;--card:#fffdf7;--ink:#1d2a24;--mute:#6b746f;--line:#e4dccb;--green:#0f5132;--green2:#e3f1e8;--red:#b42318;--red2:#fde7e5;--amber:#a15c07;--amber2:#fdf0d5;--blue:#1d4ed8;--blue2:#e4ebfd;--gold:#a8842f}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,system-ui,sans-serif}
-.wrap{max-width:760px;margin:0 auto;padding:16px 14px 120px}
-header{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:12px}
-h1{font-size:20px;margin:0;color:var(--green);letter-spacing:-.01em}
+.wrap{max-width:780px;margin:0 auto;padding:14px 14px 130px}
+header{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:10px}
+h1{font-size:20px;margin:0;color:var(--green)}
 h1 span{font-family:"Amiri Quran",serif;font-weight:400;color:var(--gold);margin-left:6px}
-.sub{color:var(--mute);font-size:13px}
+.sub{color:var(--mute);font-size:12.5px;text-align:right}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:end}
 label{font-size:12px;color:var(--mute);display:flex;flex-direction:column;gap:3px}
-select,input{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
-select.surah{min-width:200px;flex:1}
-input.n{width:74px}
+select,input[type=number]{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+select.surah{min-width:190px;flex:1}
+input.n{width:72px}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
 .seg button{border:0;background:none;padding:8px 12px;font:inherit;color:var(--mute);cursor:pointer}
 .seg button.on{background:var(--green);color:#fff}
-.toggles{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;align-items:center;font-size:13px}
-.toggles input{width:auto;padding:0;margin-right:5px}
+.opts{display:flex;gap:6px 14px;flex-wrap:wrap;margin-top:10px;align-items:center;font-size:13.5px}
+.opts label{flex-direction:row;align-items:center;gap:6px;color:var(--ink);font-size:13.5px}
 .note{margin-top:10px;font-size:13px;padding:9px 11px;border-radius:10px;background:var(--amber2);color:#5b3a06;display:none}
 .note.show{display:block}
-#mushaf{margin-top:12px;direction:rtl;text-align:justify;font-family:"Amiri Quran",serif;font-size:27px;line-height:2.35;padding:18px 16px;min-height:200px}
+.model{margin-top:10px;font-size:12.5px;color:var(--mute);display:flex;align-items:center;gap:8px}
+.model .bar{flex:1;height:6px;background:#ece5d4;border-radius:4px;overflow:hidden}
+.model .bar i{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+#mushaf{margin-top:12px;direction:rtl;text-align:justify;font-family:"Amiri Quran",serif;font-size:27px;line-height:2.4;padding:18px 16px;min-height:200px}
 .w{padding:0 2px;border-radius:6px;cursor:pointer;transition:background .15s,color .15s}
-.hide .w.p{color:transparent;background:repeating-linear-gradient(90deg,#ece5d4 0 100%);background-size:100% 30%;background-repeat:no-repeat;background-position:center 62%}
+.hide .w.p{color:transparent;background:linear-gradient(#ece5d4,#ece5d4) no-repeat center 62%/100% 30%}
 .w.ok{color:var(--green)}
-.w.wr{color:var(--red);background:var(--red2)}
-.w.ms{color:var(--amber);background:var(--amber2);text-decoration:underline dotted}
-.w.ht{background:var(--blue2);color:var(--blue)}
-.w.fx{color:var(--green);text-decoration:underline wavy var(--red);text-underline-offset:6px}
-#stopCard{position:fixed;left:0;right:0;bottom:78px;padding:0 14px;display:none;z-index:5}
-#stopCard.show{display:block}
-#stopCard .in{max-width:760px;margin:0 auto;background:#fff;border:2px solid var(--red);border-radius:16px;padding:14px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
-#stopCard .t{font-weight:600;color:var(--red)}
-#stopCard .cw{font-family:"Amiri Quran",serif;font-size:38px;line-height:1.9;direction:rtl;text-align:center;color:var(--green)}
-#stopCard .hw{font-size:13px;color:var(--mute);text-align:center;direction:rtl}
-#stopCard .row{margin-top:10px}
-#stopCard .btn{flex:1}
+.w.kh{color:var(--green);background:var(--amber2);box-shadow:inset 0 -3px 0 var(--amber)}
+.w.jali{color:var(--red);background:var(--red2)}
+.w.fixed{color:var(--green);text-decoration:underline wavy var(--red);text-underline-offset:7px}
 .w.cur{outline:2px solid var(--gold);outline-offset:1px}
 .am{display:inline-flex;align-items:center;justify-content:center;min-width:1.25em;height:1.25em;font-size:.6em;border:1.5px solid var(--gold);border-radius:50%;color:var(--gold);margin:0 4px;line-height:1;vertical-align:middle;padding:0 .2em}
-.heard{direction:rtl;font-size:15px;color:var(--mute);margin-top:10px;min-height:1.4em;font-family:system-ui,sans-serif}
-.heard i{color:#9aa39e}
 .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--mute);margin-top:8px}
 .legend b{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
-.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,253,247,.96);border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));backdrop-filter:blur(6px)}
-.bar .in{max-width:760px;margin:0 auto;display:flex;gap:8px;align-items:center}
+.stats{display:flex;gap:12px;font-size:13px;color:var(--mute);margin-top:10px;flex-wrap:wrap}
+.stats b{color:var(--ink)}
+.bar-b{position:fixed;left:0;right:0;bottom:0;background:rgba(255,253,247,.97);border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom))}
+.bar-b .in{max-width:780px;margin:0 auto;display:flex;gap:8px;align-items:center}
 .btn{font:inherit;font-weight:600;border:1px solid var(--line);background:#fff;color:var(--ink);padding:11px 14px;border-radius:12px;cursor:pointer;white-space:nowrap}
+.btn:disabled{opacity:.5}
 .btn.main{background:var(--green);border-color:var(--green);color:#fff;flex:1;display:flex;gap:8px;align-items:center;justify-content:center}
 .btn.main.live{background:var(--red);border-color:var(--red)}
-.dot{width:9px;height:9px;border-radius:50%;background:#fff}
-.live .dot{animation:p 1s infinite}
-@keyframes p{50%{opacity:.25}}
-.stats{display:flex;gap:10px;font-size:13px;color:var(--mute);margin-top:10px;flex-wrap:wrap}
-.stats span b{color:var(--ink)}
-dialog{border:0;border-radius:16px;padding:0;max-width:440px;width:calc(100% - 28px);background:var(--card);color:var(--ink)}
+.lvl{width:9px;height:9px;border-radius:50%;background:#fff;opacity:.5;transition:transform .08s}
+#stopCard{position:fixed;left:0;right:0;bottom:80px;padding:0 14px;display:none;z-index:5}
+#stopCard.show{display:block}
+body.stopped .wrap{padding-bottom:470px}
+#stopCard .in{max-width:780px;margin:0 auto;background:#fff;border:2px solid var(--red);border-radius:16px;padding:14px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+#stopCard.kh .in{border-color:var(--amber)}
+#scTitle{font-weight:600;color:var(--red)}
+#stopCard.kh #scTitle{color:var(--amber)}
+#scWord{font-family:"Amiri Quran",serif;font-size:38px;line-height:1.9;direction:rtl;text-align:center;color:var(--green)}
+#scWhy{font-size:13.5px;text-align:center}
+#scWhy .ar{direction:rtl;color:var(--mute);font-size:13px}
+#stopCard .row{margin-top:10px}
+#stopCard .btn{flex:1}
+dialog{border:0;border-radius:16px;padding:0;max-width:460px;width:calc(100% - 28px);background:var(--card);color:var(--ink)}
 dialog::backdrop{background:rgba(20,30,25,.45)}
 .dlg{padding:18px}
 .dlg h2{margin:0 0 8px;font-size:18px;color:var(--green)}
 .big{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
 .big div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center;font-size:12px;color:var(--mute)}
 .big div b{display:block;font-size:20px;color:var(--ink)}
-.revise{font-size:14px}
-.revise li{margin:3px 0}
-.hist{margin-top:14px;font-size:13px;color:var(--mute)}
-.hist summary{cursor:pointer;color:var(--ink);font-weight:500}
+.rev{font-size:14px;max-height:45vh;overflow:auto}
+.rev li{margin:4px 0}
+.qw{font-family:"Amiri Quran",serif;font-size:20px}
+details.dbg{margin-top:14px;font-size:12px;color:var(--mute)}
+details.dbg summary{cursor:pointer;color:var(--ink)}
+#log{font:11.5px/1.4 ui-monospace,monospace;white-space:pre-wrap;max-height:240px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px}
 .hist ul{padding-left:18px;margin:6px 0}
-.small{font-size:12px;color:var(--mute)}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <h1>e-Muhaffiz<span>تسميع</span></h1>
-    <div class="sub" id="modeTag"></div>
+    <div class="sub" id="status">Loading…</div>
   </header>
 
   <div class="card">
@@ -89,479 +96,69 @@ dialog::backdrop{background:rgba(20,30,25,.45)}
       <label>From ayah<input class="n" id="from" type="number" min="1" value="1"></label>
       <label>To ayah<input class="n" id="to" type="number" min="1" value="7"></label>
     </div>
-    <div class="toggles">
+    <div class="opts">
       <div class="seg" id="modeSeg"><button data-m="mic" class="on">Listen to me</button><button data-m="self">Self-check</button></div>
-      <label style="flex-direction:row;align-items:center;color:var(--ink)"><input type="checkbox" id="hideT" checked>Hide text</label>
-      <label style="flex-direction:row;align-items:center;color:var(--ink)"><input type="checkbox" id="stopOn" checked>Stop me on mistakes &amp; say the right word</label>
+      <label><input type="checkbox" id="hideT" checked>Hide text</label>
+      <label><input type="checkbox" id="voiceOn" checked>Say the right word</label>
+      <label><input type="checkbox" id="stopKh">Also stop me for tajweed</label>
     </div>
+    <div class="model" id="modelBox"><span id="modelTxt">Preparing the tajweed model…</span><div class="bar"><i id="modelBar"></i></div></div>
     <div class="note" id="note"></div>
   </div>
 
   <div class="card" id="mushaf"></div>
   <div class="legend">
     <span><b style="background:var(--green)"></b>Correct</span>
+    <span><b style="background:var(--amber)"></b>Tajweed remark</span>
     <span><b style="background:var(--red)"></b>Mistake</span>
-    <span><b style="background:var(--amber)"></b>Skipped</span>
-    <span><b style="background:var(--blue)"></b>Hint taken</span>
-    <span><b style="background:var(--green);border-bottom:2px solid var(--red)"></b>Fixed after correction</span>
-    <span>Tap a word to correct a wrong mark.</span>
+    <span><b style="background:var(--green);box-shadow:inset 0 -2px 0 var(--red)"></b>Fixed after correction</span>
+    <span>Tap a word to see what was heard.</span>
   </div>
   <div class="stats" id="stats"></div>
-  <div class="heard" id="heard"></div>
 
   <details class="hist" id="histBox"><summary>Past tasmi sessions</summary><ul id="hist"></ul></details>
+  <details class="dbg"><summary>What the model heard (for troubleshooting)</summary>
+    <div class="row" style="margin:6px 0"><button class="btn" id="copyLog" style="padding:6px 10px">Copy log</button></div>
+    <div id="log"></div>
+  </details>
 </div>
 
 <div id="stopCard"><div class="in">
-  <div class="t" id="scTitle">Mistake</div>
-  <div class="cw" id="scWord"></div>
-  <div class="hw" id="scHeard"></div>
+  <div id="scTitle"></div>
+  <div id="scWord"></div>
+  <div id="scWhy"></div>
   <div class="row">
     <button class="btn" id="scAgain">🔊 Say again</button>
     <button class="btn" id="scRight">I said it right</button>
-    <button class="btn main" id="scGo">Continue</button>
+    <button class="btn main" id="scGo">Carry on</button>
   </div>
 </div></div>
 
-<div class="bar"><div class="in">
+<div class="bar-b"><div class="in">
   <button class="btn" id="hintBtn">Hint</button>
-  <button class="btn main" id="mainBtn"><span class="dot"></span><span id="mainTxt">Start tasmi</span></button>
+  <button class="btn main" id="mainBtn" disabled><span class="lvl" id="lvl"></span><span id="mainTxt">Start tasmi</span></button>
   <button class="btn" id="doneBtn">Finish</button>
 </div></div>
 
-<dialog id="dlg"><div class="dlg">
-  <h2 id="dTitle">Tasmi result</h2>
-  <div class="small" id="dRange"></div>
-  <div class="big" id="dBig"></div>
-  <div class="revise" id="dRev"></div>
+<dialog id="wordDlg"><div class="dlg">
+  <h2 id="wdWord" class="qw" style="font-size:30px;direction:rtl"></h2>
+  <div id="wdBody" class="rev"></div>
+  <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn" id="wdOk">Mark as correct</button><button class="btn main" style="flex:0" id="wdClose">Close</button></div>
+</div></dialog>
+
+<dialog id="sumDlg"><div class="dlg">
+  <h2>Tasmi result</h2>
+  <div class="sub" style="text-align:left" id="sRange"></div>
+  <div class="big" id="sBig"></div>
+  <div class="rev" id="sRev"></div>
   <div class="row" style="justify-content:flex-end;margin-top:14px">
-    <button class="btn" id="dAgain">Recite again</button>
-    <button class="btn main" style="flex:0" id="dClose">Close</button>
+    <button class="btn" id="sAgain">Recite again</button>
+    <button class="btn main" style="flex:0" id="sClose">Close</button>
   </div>
 </div></dialog>
 
-<script>
-(() => {
-const $ = id => document.getElementById(id);
-let Q = null, dict = null, mode = 'mic', listening = false;
-let words = [], spans = [], M = 0;
-let finalText = '', partialText = '';
-let status = [], heardAt = [], hint = new Set(), override = new Map();
-let cE = 0, cH = 0, frontier = -1, selfPtr = 0, extras = 0;
-let tts = null, mistakes = new Map(), checkedUpTo = -1, trail = [], cur = null, actx = null;
-const lsGet = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } };
-const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
-
-// ---------- Arabic normalisation & matching ----------
-function norm(s) {
-  s = s.normalize('NFC')
-    .replace(/[ؐ-ًؚ-ٰٟۖ-ۭ࣓-ࣿـ]/g, '')
-    .replace(/[ٱأإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه')
-    .replace(/ؤ/g, 'و').replace(/ئ/g, 'ي').replace(/ء/g, '')
-    .replace(/[^ء-ي]/g, '');
-  return s.length > 1 ? s[0] + s.slice(1).replace(/ا/g, '') : s;
-}
-function lev(a, b) {
-  if (a === b) return 0;
-  const m = a.length, n = b.length; if (!m) return n; if (!n) return m;
-  let prev = Array.from({length: n + 1}, (_, j) => j), cur = new Array(n + 1);
-  for (let i = 1; i <= m; i++) {
-    cur[0] = i;
-    for (let j = 1; j <= n; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
-    [prev, cur] = [cur, prev];
-  }
-  return prev[n];
-}
-function same(h, e) {
-  if (!h || !e) return false;
-  if (h === e) return true;
-  const L = Math.max(h.length, e.length);
-  if (L <= 2) return false;
-  return 1 - lev(h, e) / L >= (L <= 4 ? 0.7 : 0.6);
-}
-// Align heard words (H) to expected words (E); trailing expected words are free (not yet recited).
-function align(H, E, F) {
-  const sk = j => (F && F[j - 1] ? 0 : 1);
-  const N = H.length, K = E.length, W = K + 1;
-  const dp = new Float32Array((N + 1) * W), bk = new Int8Array((N + 1) * W);
-  for (let j = 1; j <= K; j++) { dp[j] = dp[j - 1] - sk(j); bk[j] = 2; }
-  for (let i = 1; i <= N; i++) {
-    dp[i * W] = -0.7 * i; bk[i * W] = 3;
-    for (let j = 1; j <= K; j++) {
-      const d = dp[(i - 1) * W + j - 1] + (same(H[i - 1], E[j - 1]) ? 2 : -1);
-      const l = dp[i * W + j - 1] - sk(j);  // expected word skipped (free for muqatta'at)
-      const u = dp[(i - 1) * W + j] - 0.7;  // extra heard word
-      let b = 1, v = d; if (l > v) { v = l; b = 2; } if (u > v) { v = u; b = 3; }
-      dp[i * W + j] = v; bk[i * W + j] = b;
-    }
-  }
-  let j = 0, best = -1e9;
-  for (let k = 0; k <= K; k++) if (dp[N * W + k] > best) { best = dp[N * W + k]; j = k; }
-  const ops = []; let i = N;
-  while (i > 0 || j > 0) {
-    const b = bk[i * W + j];
-    if (b === 1) { ops.push({t: same(H[i - 1], E[j - 1]) ? 'ok' : 'wr', h: i - 1, e: j - 1}); i--; j--; }
-    else if (b === 2) { ops.push({t: 'ms', e: j - 1}); j--; }
-    else { ops.push({t: 'x', h: i - 1}); i--; }
-  }
-  return ops.reverse();
-}
-
-// ---------- building the passage ----------
-const MUQ = new Set([2,3,7,10,11,12,13,14,15,19,20,26,27,28,29,30,31,32,36,38,40,41,42,43,44,45,46,50,68]);
-function build() {
-  const s = Q[+$('surah').value - 1];
-  let a = Math.max(1, Math.min(s.v.length, +$('from').value || 1));
-  let b = Math.max(a, Math.min(s.v.length, +$('to').value || s.v.length));
-  $('from').value = a; $('to').value = b;
-  lsSet('emuhaffiz.last', {s: s.n, a, b});
-  words = []; const box = $('mushaf'); box.innerHTML = ''; spans = [];
-  const frag = document.createDocumentFragment();
-  for (let k = a; k <= b; k++) {
-    s.v[k - 1].split(/\s+/).filter(Boolean).forEach((t, ti) => {
-      const free = ti === 0 && ((k === 1 && MUQ.has(s.n)) || (s.n === 42 && k === 2));
-      const i = words.length; words.push({t, k: norm(t), a: k, free});
-      const sp = document.createElement('span'); sp.className = 'w p'; sp.textContent = t; sp.dataset.i = i;
-      spans.push(sp); frag.appendChild(sp); frag.appendChild(document.createTextNode(' '));
-    });
-    const am = document.createElement('span'); am.className = 'am'; am.textContent = k.toLocaleString('ar-EG');
-    frag.appendChild(am); frag.appendChild(document.createTextNode(' '));
-  }
-  box.appendChild(frag); M = words.length;
-  reset();
-}
-function reset() {
-  if (listening && dict) dict.stop().catch(() => {});
-  finalText = ''; partialText = ''; cE = 0; cH = 0; frontier = -1; selfPtr = 0; extras = 0;
-  status = new Array(M).fill(null); heardAt = new Array(M).fill(''); hint = new Set(); override = new Map();
-  mistakes = new Map(); checkedUpTo = -1; trail = []; hideStop();
-  spans.forEach(sp => sp._c = null);
-  recompute(false); render();
-}
-
-// ---------- recognition → statuses ----------
-let live = new Map();
-function recompute(commit) {
-  live = new Map();
-  if (mode !== 'mic') return;
-  const raw = (finalText + ' ' + partialText).trim().split(/\s+/).filter(Boolean);
-  const Hk = raw.map(norm).map((k, i) => ({k, r: raw[i]})).filter(x => x.k);
-  const Hs = Hk.slice(cH);
-  const K = Math.min(M - cE, Math.ceil(Hs.length * 1.6) + 30);
-  const Ew = words.slice(cE, cE + K);
-  const ops = align(Hs.map(x => x.k), Ew.map(w => w.k), Ew.map(w => w.free));
-  let last = cE - 1, ex = 0;
-  trail = [];
-  for (const o of ops) {
-    if (o.t === 'x') { ex++; trail.push(Hs[o.h]); continue; }
-    trail = [];
-    live.set(cE + o.e, {t: o.t, h: o.h != null ? Hs[o.h].r : ''});
-    if (o.t !== 'ms') last = cE + o.e;
-  }
-  frontier = Math.max(cE - 1, last);
-  extras = ex;
-  // commit older part so long surahs stay fast
-  if (commit && Hs.length > 40) {
-    const cut = Hs.length - 20; let lastOk = -1;
-    for (let n = 0; n < ops.length; n++) { const o = ops[n]; if (o.h != null && o.h >= cut) break; if (o.t === 'ok') lastOk = n; }
-    if (lastOk >= 0) {
-      let newE = cE, newH = cH;
-      for (let n = 0; n <= lastOk; n++) {
-        const o = ops[n];
-        if (o.e != null) { status[cE + o.e] = o.t; heardAt[cE + o.e] = o.h != null ? Hs[o.h].r : ''; newE = cE + o.e + 1; }
-        if (o.h != null) newH = cH + o.h + 1;
-      }
-      cE = newE; cH = newH;
-    }
-  }
-}
-function baseState(i) {
-  if (mode === 'self') return i < selfPtr ? 'ok' : 'p';
-  if (i < cE) return status[i] || 'p';
-  const l = live.get(i);
-  if (l && i <= frontier) return l.t;
-  return 'p';
-}
-function stateOf(i) {
-  if (override.has(i)) return override.get(i);
-  const st = baseState(i);
-  if (words[i].free && (st === 'ms' || st === 'wr') && i <= frontier) return 'ok';
-  if (mistakes.has(i)) return st === 'ok' ? 'fx' : 'wr';
-  return st;
-}
-
-// ---------- the muhaffiz: stop on a mistake and say the right word ----------
-const speakable = t => t.replace(/[ۖ-ۭ]/g, '').replace(/ٱ/g, 'ا');
-function findMistake() {
-  if (!$('stopOn').checked || mode !== 'mic') return null;
-  for (let i = Math.max(0, checkedUpTo + 1); i <= frontier; i++) {
-    if (override.has(i) || mistakes.has(i) || words[i].free) continue;
-    const st = baseState(i);
-    if (st === 'wr') return {idx: [i], kind: 'wr', heard: (live.get(i) || {}).h || heardAt[i]};
-    if (st === 'ms') { const g = [i]; while (g.length < 4 && baseState(i + g.length) === 'ms') g.push(i + g.length); return {idx: g, kind: 'ms'}; }
-  }
-  // a wrong word at the end of a phrase shows up as unmatched heard words after the last match
-  const n = frontier + 1;
-  if (frontier >= 0 && trail.length && n < M && !words[n].free && !mistakes.has(n) && !override.has(n)) {
-    const recent = words.slice(Math.max(0, n - 8), n + 1).map(w => w.k);
-    const isRepeat = trail.some(x => recent.some(k => same(x.k, k)));
-    if (!isRepeat) return {idx: [n], kind: 'wr', heard: trail.map(x => x.r).join(' ')};
-  }
-  return null;
-}
-function checkMistake() {
-  if (cur) return;
-  const m = findMistake();
-  checkedUpTo = Math.max(checkedUpTo, frontier);
-  if (!m) return;
-  m.idx.forEach(i => mistakes.set(i, m.heard || ''));
-  m.idx.forEach(i => { if (m.heard) heardAt[i] = m.heard; });
-  cur = m;
-  render(); showStop(m);
-  beep();
-  const say = speakable(m.idx.map(i => words[i].t).join(' '));
-  const stopMic = dict && listening ? dict.stop().catch(() => {}) : Promise.resolve();
-  const me = m;
-  stopMic.then(() => sayWord(say)).then(() => new Promise(r => setTimeout(r, 300))).then(() => {
-    if (cur !== me || mode !== 'mic' || !dict) return;
-    me.resumed = true;
-    $('scTitle').textContent = 'Now say it and carry on';
-    dict.start().catch(() => {});
-  });
-}
-function sayWord(text) {
-  if (!tts) return new Promise(r => setTimeout(r, 1200));
-  return tts.speak(text, {rate: 0.8}).catch(() => {});
-}
-function showStop(m) {
-  const w = words[m.idx[0]];
-  $('scTitle').textContent = (m.kind === 'ms' ? 'You skipped' : 'Mistake') + ' · ayah ' + w.a + (tts ? '' : ' (voice not available here)');
-  $('scWord').textContent = m.idx.map(i => words[i].t).join(' ');
-  $('scHeard').textContent = m.kind === 'wr' && m.heard ? 'You said: ' + m.heard : 'Say it, then carry on.';
-  $('scRight').style.display = m.kind === 'wr' ? '' : 'none';
-  $('stopCard').classList.add('show');
-}
-function hideStop() { const s = $('stopCard'); if (s) s.classList.remove('show'); cur = null; }
-function beep() {
-  try {
-    if (!actx) return;
-    const o = actx.createOscillator(), g = actx.createGain();
-    o.frequency.value = 520; g.gain.setValueAtTime(0.0001, actx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.25, actx.currentTime + 0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + 0.35);
-    o.connect(g).connect(actx.destination); o.start(); o.stop(actx.currentTime + 0.4);
-  } catch (e) {}
-}
-function unlockAudio() {
-  try { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch (e) {}
-}
-function startListening() {
-  unlockAudio();
-  hideStop();
-  if (tts && tts.active()) tts.stop().catch(() => {});
-  note('');
-  dict.start().catch(() => note('Couldn’t start the mic. Try again.'));
-}
-function render() {
-  let ok = 0, wr = 0, ms = 0, curW = -1;
-  const reach = mode === 'self' ? selfPtr - 1 : frontier;
-  for (let i = 0; i < M; i++) {
-    let st = stateOf(i);
-    if (hint.has(i) && st === 'p') st = 'ht';
-    if (st === 'ok') ok++; else if (st === 'wr' || st === 'fx') wr++; else if (st === 'ms') ms++;
-    if (curW < 0 && i > reach && st === 'p') curW = i;
-    let c = 'w ' + st + (hint.has(i) && st !== 'ht' ? ' ht' : '');
-    if (spans[i]._c !== c) { spans[i].className = c; spans[i]._c = c; }
-  }
-  spans.forEach(sp => sp.classList.remove('cur'));
-  if (curW >= 0 && (listening || mode === 'self')) {
-    spans[curW].classList.add('cur');
-    const r = spans[curW].getBoundingClientRect();
-    if (r.top > innerHeight - 260 || r.top < 60) spans[curW].scrollIntoView({block: 'center', behavior: 'smooth'});
-  }
-  const pct = M ? Math.round(100 * Math.max(0, reach + 1) / M) : 0;
-  $('stats').innerHTML = `<span>Progress <b>${pct}%</b></span><span>Correct <b>${ok}</b></span><span>Mistakes <b>${wr}</b></span><span>Skipped <b>${ms}</b></span><span>Hints <b>${hint.size}</b></span>`;
-  const h = (finalText.split(/\s+/).slice(-14).join(' ')).trim();
-  $('heard').innerHTML = mode === 'mic' && (h || partialText)
-    ? 'Heard: ' + esc(h) + (partialText ? ' <i>' + esc(partialText) + '</i>' : '') : '';
-  return {ok, wr, ms};
-}
-const esc = s => s.replace(/[&<>]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[c]));
-
-// ---------- controls ----------
-function setMain() {
-  const b = $('mainBtn');
-  b.classList.toggle('live', listening);
-  if (mode === 'self') { $('mainTxt').textContent = 'Reveal next ayah'; $('hintBtn').textContent = 'Next word'; }
-  else { $('mainTxt').textContent = listening ? 'Stop listening' : (finalText ? 'Continue' : 'Start tasmi'); $('hintBtn').textContent = 'Hint'; }
-  $('modeTag').textContent = mode === 'mic' ? (dict ? 'Mic ready' : 'Mic not available here') : 'Self-check';
-}
-function note(msg) { const n = $('note'); n.innerHTML = msg || ''; n.classList.toggle('show', !!msg); }
-function noMicNote() {
-  note('This browser can’t listen. Open this page in <b>Google Chrome</b> (not inside another app), or use <b>Self-check</b> mode.');
-}
-
-$('mainBtn').addEventListener('click', () => {
-  if (mode === 'self') { // reveal to the end of the current ayah
-    if (selfPtr >= M) return;
-    const a = words[selfPtr].a; while (selfPtr < M && words[selfPtr].a === a) selfPtr++;
-    render(); return;
-  }
-  if (!dict) { noMicNote(); return; }
-  if (listening) { dict.stop().catch(() => {}); return; }
-  startListening();
-});
-$('scGo').addEventListener('click', () => { if (dict) startListening(); else hideStop(); });
-$('scAgain').addEventListener('click', () => {
-  if (!cur) return;
-  const m = cur, txt = speakable(m.idx.map(i => words[i].t).join(' '));
-  const st = dict && dict.active() ? dict.stop() : Promise.resolve();
-  st.then(() => sayWord(txt)).then(() => { if (cur === m && dict) dict.start().catch(() => {}); });
-});
-$('scRight').addEventListener('click', () => {
-  if (cur) cur.idx.forEach(i => { mistakes.delete(i); override.set(i, 'ok'); });
-  render(); if (dict) startListening(); else hideStop();
-});
-$('stopOn').checked = lsGet('emuhaffiz.stopOn', true);
-$('stopOn').addEventListener('change', () => lsSet('emuhaffiz.stopOn', $('stopOn').checked));
-$('hintBtn').addEventListener('click', () => {
-  if (mode === 'self') { if (selfPtr < M) { selfPtr++; render(); } return; }
-  for (let i = frontier + 1; i < M; i++) if (!hint.has(i)) { hint.add(i); break; }
-  render();
-});
-$('mushaf').addEventListener('click', e => {
-  const sp = e.target.closest('.w'); if (!sp) return;
-  const i = +sp.dataset.i, st = stateOf(i);
-  if (st === 'p') return;
-  override.set(i, st === 'ok' ? 'wr' : 'ok');
-  render();
-});
-$('doneBtn').addEventListener('click', finish);
-$('dClose').addEventListener('click', () => $('dlg').close());
-$('dAgain').addEventListener('click', () => { $('dlg').close(); reset(); setMain(); });
-$('modeSeg').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  mode = b.dataset.m; [...$('modeSeg').children].forEach(x => x.classList.toggle('on', x === b));
-  if (mode === 'self') note('Recite from memory, then tap <b>Reveal next ayah</b> to check yourself. Tap any word you got wrong to mark it red.');
-  else if (!dict) noMicNote(); else note('');
-  reset(); setMain();
-});
-$('hideT').addEventListener('change', () => $('mushaf').classList.toggle('hide', $('hideT').checked));
-$('surah').addEventListener('change', () => { $('from').value = 1; $('to').value = Q[+$('surah').value - 1].v.length; build(); });
-$('from').addEventListener('change', build);
-$('to').addEventListener('change', build);
-
-function finish() {
-  if (listening && dict) dict.stop().catch(() => {});
-  const r = render(), s = Q[+$('surah').value - 1];
-  const bad = new Map();
-  for (let i = 0; i < M; i++) {
-    const st = stateOf(i);
-    if (st === 'wr' || st === 'fx' || st === 'ms' || hint.has(i)) {
-      const a = words[i].a; if (!bad.has(a)) bad.set(a, []);
-      bad.get(a).push(words[i].t + (st === 'wr' && heardAt[i] ? '' : ''));
-    }
-  }
-  $('dRange').textContent = `${s.en} (${s.ar}) · ayah ${$('from').value}–${$('to').value}`;
-  $('dBig').innerHTML = `<div><b>${r.ok}</b>Correct</div><div><b>${r.wr}</b>Mistakes</div><div><b>${r.ms}</b>Skipped</div><div><b>${hint.size}</b>Hints</div>`;
-  $('dRev').innerHTML = bad.size
-    ? '<b>Revise these ayahs:</b><ul>' + [...bad].map(([a, ws]) => `<li>Ayah ${a}: <span style="font-family:'Amiri Quran',serif;font-size:19px" dir="rtl">${ws.map(esc).join(' · ')}</span></li>`).join('') + '</ul>'
-    : '<b>MashaAllah — no mistakes marked.</b>';
-  const hist = lsGet('emuhaffiz.hist', []);
-  hist.unshift({d: new Date().toISOString().slice(0, 16).replace('T', ' '), s: s.en, a: $('from').value, b: $('to').value, ok: r.ok, wr: r.wr, ms: r.ms, h: hint.size});
-  lsSet('emuhaffiz.hist', hist.slice(0, 40)); showHist();
-  try { $('dlg').showModal(); } catch (e) { $('dlg').setAttribute('open', ''); }
-}
-function showHist() {
-  const h = lsGet('emuhaffiz.hist', []);
-  $('histBox').style.display = h.length ? '' : 'none';
-  $('hist').innerHTML = h.map(x => `<li>${esc(x.d)} — ${esc(x.s)} ${x.a}–${x.b}: ${x.ok} correct, ${x.wr} mistakes, ${x.ms} skipped, ${x.h} hints</li>`).join('');
-}
-
-// ---------- Chrome speech recognition + Arabic voice ----------
-function makeListener() {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) return null;
-  let want = false, rec = null, lastErr = null, stopWait = null;
-  const h = {f: [], p: [], s: []}, emit = (k, e) => h[k].forEach(fn => fn(e));
-  function open() {
-    rec = new SR(); rec.lang = 'ar-SA'; rec.continuous = false; rec.interimResults = true; rec.maxAlternatives = 1;
-    rec.onresult = e => {
-      let fin = '', par = '';
-      for (let i = e.resultIndex; i < e.results.length; i++) { const t = e.results[i][0].transcript; if (e.results[i].isFinal) fin += t; else par += t; }
-      if (fin.trim()) { emit('p', {text: ''}); emit('f', {text: ' ' + fin.trim()}); }
-      else emit('p', {text: par.trim()});
-    };
-    rec.onerror = e => {
-      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { want = false; lastErr = 'not_granted'; }
-      else if (e.error === 'language-not-supported') { want = false; lastErr = 'unavailable'; }
-      else if (e.error === 'network') lastErr = 'network';
-    };
-    rec.onend = () => {
-      rec = null;
-      if (want) setTimeout(() => { if (want && !rec) { try { open(); } catch (err) { want = false; emit('s', {state: 'idle', reason: 'upstream_error'}); } } }, 150);
-      else { emit('s', {state: 'idle', reason: lastErr || 'stopped'}); if (stopWait) { stopWait(); stopWait = null; } }
-    };
-    rec.start();
-  }
-  return {
-    start() { if (want) return Promise.resolve(); want = true; lastErr = null;
-      try { open(); emit('s', {state: 'listening'}); return Promise.resolve(); } catch (e) { want = false; return Promise.reject(e); } },
-    stop() { want = false; if (!rec) return Promise.resolve();
-      return new Promise(res => { stopWait = res; try { rec.stop(); } catch (e) { res(); } setTimeout(res, 1500); }); },
-    active() { return want; },
-    onFinal(fn) { h.f.push(fn); }, onPartial(fn) { h.p.push(fn); }, onState(fn) { h.s.push(fn); }
-  };
-}
-function makeVoice() {
-  const S = window.speechSynthesis; if (!S || !window.SpeechSynthesisUtterance) return null;
-  const pick = () => { const v = S.getVoices(); return v.find(x => /^ar[-_]SA/i.test(x.lang)) || v.find(x => /^ar/i.test(x.lang)) || null; };
-  return {
-    speak(text, o) {
-      return new Promise(res => {
-        const u = new SpeechSynthesisUtterance(text); u.lang = 'ar-SA'; const v = pick(); if (v) u.voice = v;
-        u.rate = (o && o.rate) || 0.85; u.onend = u.onerror = () => res();
-        S.cancel(); S.speak(u); setTimeout(res, 8000);
-      });
-    },
-    active() { return S.speaking; }, stop() { S.cancel(); return Promise.resolve(); },
-    hasArabic() { return !!pick(); }
-  };
-}
-function initDict() {
-  dict = makeListener(); tts = makeVoice();
-  if (dict) {
-    dict.onFinal(({text}) => {
-      finalText += text; partialText = ''; recompute(true); render(); setMain();
-      if (cur && cur.resumed) hideStop();
-      if (listening) checkMistake();
-    });
-    dict.onPartial(({text}) => { partialText = text; recompute(false); render(); });
-    dict.onState(({state, reason}) => {
-      listening = state !== 'idle';
-      if (state === 'idle') {
-        partialText = ''; recompute(true); render();
-        if (reason === 'not_granted') note('Chrome blocked the microphone. Tap the lock icon by the address, allow Microphone, then try again.');
-        else if (reason === 'unavailable') note('Chrome’s speech recognition doesn’t support Arabic on this phone. Install/enable Google app voice typing for Arabic, or use Self-check.');
-        else if (reason === 'network') note('Speech recognition needs internet. Check your connection and tap Continue.');
-      }
-      setMain();
-    });
-  } else if (mode === 'mic') noMicNote();
-  setTimeout(() => { if (tts && !tts.hasArabic() && speechSynthesis.getVoices().length) note('No Arabic voice found for speaking corrections. In Android Settings → Text-to-speech, install the Arabic voice for Google TTS. Corrections still show on screen.'); }, 2500);
-  setMain();
-}
-
-// ---------- start ----------
-fetch('quran.json').then(r => r.json()).then(data => {
-  Q = data;
-  $('surah').innerHTML = Q.map(s => `<option value="${s.n}">${s.n}. ${s.en} · ${s.ar}</option>`).join('');
-  const last = lsGet('emuhaffiz.last', null);
-  if (last && Q[last.s - 1]) { $('surah').value = last.s; $('from').value = last.a; $('to').value = last.b; }
-  $('mushaf').classList.toggle('hide', $('hideT').checked);
-  build(); showHist(); setMain(); initDict();
-}).catch(() => { $('mushaf').textContent = 'Could not load the Quran text. Reload the page.'; });
-})();
-</script>
+<script src="engine.js"></script>
+<script src="audio.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
